@@ -1,0 +1,6 @@
+@ForkliftQuiz_HostAddress = http://localhost:5230
+
+GET {{ForkliftQuiz_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
