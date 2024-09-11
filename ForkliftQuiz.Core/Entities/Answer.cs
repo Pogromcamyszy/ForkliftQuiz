@@ -12,6 +12,6 @@ namespace ForkliftQuiz.Core.Entities
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
         public int QuestionId { get; set; }
-        public Question Question { get; set; } // Relacja z pytaniem
+        public Question Question { get; set; } 
     }
 }

@@ -1,13 +1,17 @@
+using ForkliftQuiz.Application.Helpers;
+using ForkliftQuiz.Application.Interfaces;
 using ForkliftQuiz.Application.Services;
 using ForkliftQuiz.Core.Interfaces;
 using ForkliftQuiz.Infrastructure.Data;
 using ForkliftQuiz.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddDbContext<ForkliftQuizDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -33,20 +37,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddControllers(); 
+
+
+builder.Services.AddScoped<IJwtTokenGenerator>(provider =>
+    new JwtTokenGenerator(builder.Configuration["Jwt:Key"]));
+
 
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ForkliftQuiz API", Version = "v1" });
 });
 
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -55,9 +64,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllers();
+app.MapControllers(); 
 
 app.Run();

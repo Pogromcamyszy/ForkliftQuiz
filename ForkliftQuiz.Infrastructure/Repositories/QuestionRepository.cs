@@ -1,9 +1,10 @@
-﻿using ForkliftQuiz.Core.Entities;
-using ForkliftQuiz.Core.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ForkliftQuiz.Application.Interfaces;
+using ForkliftQuiz.Core.Entities;
 using ForkliftQuiz.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ForkliftQuiz.Infrastructure.Repositories
 {
@@ -18,17 +19,12 @@ namespace ForkliftQuiz.Infrastructure.Repositories
 
         public async Task<Question> GetByIdAsync(int id)
         {
-            return await _context.Questions
-                .Include(q => q.Answers)
-                .SingleOrDefaultAsync(q => q.Id == id);
+            return await _context.Questions.FindAsync(id);
         }
 
         public async Task<IEnumerable<Question>> GetQuestionsByQuizIdAsync(int quizId)
         {
-            return await _context.Questions
-                .Where(q => q.QuizId == quizId)
-                .Include(q => q.Answers)
-                .ToListAsync();
+            return await _context.Questions.Where(q => q.QuizId == quizId).ToListAsync();
         }
 
         public async Task AddAsync(Question question)
@@ -51,6 +47,11 @@ namespace ForkliftQuiz.Infrastructure.Repositories
                 _context.Questions.Remove(question);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Question>> GetAllAsync()
+        {
+            return await _context.Questions.ToListAsync();
         }
     }
 }

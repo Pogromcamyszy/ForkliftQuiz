@@ -1,17 +1,72 @@
-﻿using ForkliftQuiz.Core.Entities;
+﻿using ForkliftQuiz.Application.DTOs;
+using ForkliftQuiz.Application.Interfaces;
+using ForkliftQuiz.Core.Entities;
 using ForkliftQuiz.Core.Interfaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace ForkliftQuiz.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IJwtTokenGenerator jwtTokenGenerator)
         {
             _userRepository = userRepository;
+            _jwtTokenGenerator = jwtTokenGenerator;
+        }
+
+        public async Task<AuthenticationResult> RegisterUserAsync(RegisterUserDto registerUserDto)
+        {
+            var existingUser = await _userRepository.GetByEmailAsync(registerUserDto.Email);
+            if (existingUser != null)
+            {
+                return new AuthenticationResult
+                {
+                    Success = false,
+                    Errors = new[] { "User with this email already exists." }
+                };
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerUserDto.Password);
+            var newUser = new User
+            {
+                Email = registerUserDto.Email,
+                PasswordHash = hashedPassword
+            };
+
+            await _userRepository.AddAsync(newUser);
+
+            var token = _jwtTokenGenerator.GenerateToken(newUser);
+
+            return new AuthenticationResult
+            {
+                Success = true,
+                Token = token
+            };
+        }
+
+        public async Task<AuthenticationResult> LoginUserAsync(LoginUserDto loginUserDto)
+        {
+            var user = await _userRepository.GetByEmailAsync(loginUserDto.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginUserDto.Password, user.PasswordHash))
+            {
+                return new AuthenticationResult
+                {
+                    Success = false,
+                    Errors = new[] { "Invalid login credentials." }
+                };
+            }
+
+            var token = _jwtTokenGenerator.GenerateToken(user);
+
+            return new AuthenticationResult
+            {
+                Success = true,
+                Token = token
+            };
         }
 
         public async Task<User> GetUserByIdAsync(int id)

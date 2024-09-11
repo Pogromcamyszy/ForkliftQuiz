@@ -1,9 +1,9 @@
-﻿using ForkliftQuiz.Core.Entities;
-using ForkliftQuiz.Core.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ForkliftQuiz.Application.Interfaces;
+using ForkliftQuiz.Core.Entities;
 using ForkliftQuiz.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ForkliftQuiz.Infrastructure.Repositories
 {
@@ -18,18 +18,12 @@ namespace ForkliftQuiz.Infrastructure.Repositories
 
         public async Task<Quiz> GetByIdAsync(int id)
         {
-            return await _context.Quizzes
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.Answers)
-                .SingleOrDefaultAsync(q => q.Id == id);
+            return await _context.Quizzes.FindAsync(id);
         }
 
         public async Task<IEnumerable<Quiz>> GetAllAsync()
         {
-            return await _context.Quizzes
-                .Include(q => q.Questions)
-                .ThenInclude(q => q.Answers)
-                .ToListAsync();
+            return await _context.Quizzes.ToListAsync();
         }
 
         public async Task AddAsync(Quiz quiz)

@@ -1,9 +1,9 @@
-﻿using ForkliftQuiz.Core.Entities;
-using ForkliftQuiz.Core.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ForkliftQuiz.Application.Interfaces;
+using ForkliftQuiz.Core.Entities;
 using ForkliftQuiz.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ForkliftQuiz.Infrastructure.Repositories
 {
@@ -24,6 +24,11 @@ namespace ForkliftQuiz.Infrastructure.Repositories
         public async Task<User> GetByEmailAsync(string email)
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _context.Users.ToListAsync();
         }
 
         public async Task AddAsync(User user)

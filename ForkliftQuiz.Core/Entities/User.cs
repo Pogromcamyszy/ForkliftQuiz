@@ -13,8 +13,8 @@ namespace ForkliftQuiz.Core.Entities
         public string UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public string Role { get; set; } // Admin, User, etc.
-        public ICollection<Quiz> Quizzes { get; set; } // Relacja z quizami
+        public string Role { get; set; } 
+        public ICollection<Quiz> Quizzes { get; set; } 
     }
 }
 
