@@ -1,5 +1,6 @@
 ﻿using ForkliftQuiz.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ForkliftQuiz.Infrastructure.Data
 {
@@ -16,30 +17,142 @@ namespace ForkliftQuiz.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Seeding Users with Email property
+            // Seeding Users
             modelBuilder.Entity<User>().HasData(
                 new User { Id = 1, UserName = "admin", Email = "admin@example.com", PasswordHash = "hashed_password", Role = "Admin" },
                 new User { Id = 2, UserName = "user1", Email = "user1@example.com", PasswordHash = "hashed_password1", Role = "User" }
             );
 
-            // Seeding Quizzes
+            // Seeding Quizzes, Questions, and Answers
             modelBuilder.Entity<Quiz>().HasData(
-                new Quiz { Id = 1, Title = "Forklift Safety Quiz", Description = "A quiz about forklift safety practices.", UserId = 1 },
-                new Quiz { Id = 2, Title = "Advanced Forklift Operations", Description = "A quiz for advanced forklift operations.", UserId = 2 }
+                new Quiz
+                {
+                    Id = 1,
+                    Title = "Forklift Safety Quiz",
+                    Description = "A quiz about forklift safety practices.",
+                    UserId = 1
+                },
+                new Quiz
+                {
+                    Id = 2,
+                    Title = "General Forklift Operations",
+                    Description = "A quiz about the general operations of forklifts.",
+                    UserId = 1
+                }
             );
 
-            // Seeding Questions
             modelBuilder.Entity<Question>().HasData(
-                new Question { Id = 1, QuizId = 1, Text = "What is the maximum load a forklift can carry?" },
-                new Question { Id = 2, QuizId = 1, Text = "How often should forklifts be inspected?" }
+                new Question
+                {
+                    Id = 1,
+                    Text = "What is the maximum safe speed for a forklift?",
+                    QuizId = 1
+                },
+                new Question
+                {
+                    Id = 2,
+                    Text = "When should a forklift operator wear a seatbelt?",
+                    QuizId = 1
+                },
+                new Question
+                {
+                    Id = 3,
+                    Text = "How often should a forklift be inspected?",
+                    QuizId = 2
+                },
+                new Question
+                {
+                    Id = 4,
+                    Text = "What should you do if you notice a leak in the hydraulic system?",
+                    QuizId = 2
+                }
             );
 
-            // Seeding Answers
             modelBuilder.Entity<Answer>().HasData(
-                new Answer { Id = 1, QuestionId = 1, Text = "2000kg", IsCorrect = true },
-                new Answer { Id = 2, QuestionId = 1, Text = "5000kg", IsCorrect = false },
-                new Answer { Id = 3, QuestionId = 2, Text = "Daily", IsCorrect = true },
-                new Answer { Id = 4, QuestionId = 2, Text = "Weekly", IsCorrect = false }
+                new Answer
+                {
+                    Id = 1,
+                    Text = "5 mph",
+                    IsCorrect = true,
+                    QuestionId = 1
+                },
+                new Answer
+                {
+                    Id = 2,
+                    Text = "10 mph",
+                    IsCorrect = false,
+                    QuestionId = 1
+                },
+                new Answer
+                {
+                    Id = 3,
+                    Text = "15 mph",
+                    IsCorrect = false,
+                    QuestionId = 1
+                },
+                new Answer
+                {
+                    Id = 4,
+                    Text = "Always",
+                    IsCorrect = true,
+                    QuestionId = 2
+                },
+                new Answer
+                {
+                    Id = 5,
+                    Text = "Only when carrying loads",
+                    IsCorrect = false,
+                    QuestionId = 2
+                },
+                new Answer
+                {
+                    Id = 6,
+                    Text = "When driving over 5 mph",
+                    IsCorrect = false,
+                    QuestionId = 2
+                },
+                new Answer
+                {
+                    Id = 7,
+                    Text = "Daily",
+                    IsCorrect = true,
+                    QuestionId = 3
+                },
+                new Answer
+                {
+                    Id = 8,
+                    Text = "Weekly",
+                    IsCorrect = false,
+                    QuestionId = 3
+                },
+                new Answer
+                {
+                    Id = 9,
+                    Text = "Monthly",
+                    IsCorrect = false,
+                    QuestionId = 3
+                },
+                new Answer
+                {
+                    Id = 10,
+                    Text = "Stop using the forklift and report the issue",
+                    IsCorrect = true,
+                    QuestionId = 4
+                },
+                new Answer
+                {
+                    Id = 11,
+                    Text = "Continue working and report it at the end of the shift",
+                    IsCorrect = false,
+                    QuestionId = 4
+                },
+                new Answer
+                {
+                    Id = 12,
+                    Text = "Fix it yourself if you have time",
+                    IsCorrect = false,
+                    QuestionId = 4
+                }
             );
         }
     }

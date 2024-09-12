@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForkliftQuiz.Infrastructure.Migrations
 {
     [DbContext(typeof(ForkliftQuizDbContext))]
-    [Migration("20240912153347_init")]
+    [Migration("20240912202335_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -54,28 +54,84 @@ namespace ForkliftQuiz.Infrastructure.Migrations
                             Id = 1,
                             IsCorrect = true,
                             QuestionId = 1,
-                            Text = "2000kg"
+                            Text = "5 mph"
                         },
                         new
                         {
                             Id = 2,
                             IsCorrect = false,
                             QuestionId = 1,
-                            Text = "5000kg"
+                            Text = "10 mph"
                         },
                         new
                         {
                             Id = 3,
-                            IsCorrect = true,
-                            QuestionId = 2,
-                            Text = "Daily"
+                            IsCorrect = false,
+                            QuestionId = 1,
+                            Text = "15 mph"
                         },
                         new
                         {
                             Id = 4,
+                            IsCorrect = true,
+                            QuestionId = 2,
+                            Text = "Always"
+                        },
+                        new
+                        {
+                            Id = 5,
                             IsCorrect = false,
                             QuestionId = 2,
+                            Text = "Only when carrying loads"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsCorrect = false,
+                            QuestionId = 2,
+                            Text = "When driving over 5 mph"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsCorrect = true,
+                            QuestionId = 3,
+                            Text = "Daily"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsCorrect = false,
+                            QuestionId = 3,
                             Text = "Weekly"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsCorrect = false,
+                            QuestionId = 3,
+                            Text = "Monthly"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsCorrect = true,
+                            QuestionId = 4,
+                            Text = "Stop using the forklift and report the issue"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsCorrect = false,
+                            QuestionId = 4,
+                            Text = "Continue working and report it at the end of the shift"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsCorrect = false,
+                            QuestionId = 4,
+                            Text = "Fix it yourself if you have time"
                         });
                 });
 
@@ -105,13 +161,25 @@ namespace ForkliftQuiz.Infrastructure.Migrations
                         {
                             Id = 1,
                             QuizId = 1,
-                            Text = "What is the maximum load a forklift can carry?"
+                            Text = "What is the maximum safe speed for a forklift?"
                         },
                         new
                         {
                             Id = 2,
                             QuizId = 1,
-                            Text = "How often should forklifts be inspected?"
+                            Text = "When should a forklift operator wear a seatbelt?"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            QuizId = 2,
+                            Text = "How often should a forklift be inspected?"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            QuizId = 2,
+                            Text = "What should you do if you notice a leak in the hydraulic system?"
                         });
                 });
 
@@ -151,9 +219,9 @@ namespace ForkliftQuiz.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "A quiz for advanced forklift operations.",
-                            Title = "Advanced Forklift Operations",
-                            UserId = 2
+                            Description = "A quiz about the general operations of forklifts.",
+                            Title = "General Forklift Operations",
+                            UserId = 1
                         });
                 });
 

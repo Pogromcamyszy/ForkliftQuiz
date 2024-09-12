@@ -105,7 +105,7 @@ namespace ForkliftQuiz.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { 1, "A quiz about forklift safety practices.", "Forklift Safety Quiz", 1 },
-                    { 2, "A quiz for advanced forklift operations.", "Advanced Forklift Operations", 2 }
+                    { 2, "A quiz about the general operations of forklifts.", "General Forklift Operations", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -113,8 +113,10 @@ namespace ForkliftQuiz.Infrastructure.Migrations
                 columns: new[] { "Id", "QuizId", "Text" },
                 values: new object[,]
                 {
-                    { 1, 1, "What is the maximum load a forklift can carry?" },
-                    { 2, 1, "How often should forklifts be inspected?" }
+                    { 1, 1, "What is the maximum safe speed for a forklift?" },
+                    { 2, 1, "When should a forklift operator wear a seatbelt?" },
+                    { 3, 2, "How often should a forklift be inspected?" },
+                    { 4, 2, "What should you do if you notice a leak in the hydraulic system?" }
                 });
 
             migrationBuilder.InsertData(
@@ -122,10 +124,18 @@ namespace ForkliftQuiz.Infrastructure.Migrations
                 columns: new[] { "Id", "IsCorrect", "QuestionId", "Text" },
                 values: new object[,]
                 {
-                    { 1, true, 1, "2000kg" },
-                    { 2, false, 1, "5000kg" },
-                    { 3, true, 2, "Daily" },
-                    { 4, false, 2, "Weekly" }
+                    { 1, true, 1, "5 mph" },
+                    { 2, false, 1, "10 mph" },
+                    { 3, false, 1, "15 mph" },
+                    { 4, true, 2, "Always" },
+                    { 5, false, 2, "Only when carrying loads" },
+                    { 6, false, 2, "When driving over 5 mph" },
+                    { 7, true, 3, "Daily" },
+                    { 8, false, 3, "Weekly" },
+                    { 9, false, 3, "Monthly" },
+                    { 10, true, 4, "Stop using the forklift and report the issue" },
+                    { 11, false, 4, "Continue working and report it at the end of the shift" },
+                    { 12, false, 4, "Fix it yourself if you have time" }
                 });
 
             migrationBuilder.CreateIndex(

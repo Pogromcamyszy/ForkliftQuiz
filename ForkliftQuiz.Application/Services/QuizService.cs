@@ -39,5 +39,10 @@ namespace ForkliftQuiz.Application.Services
         {
             await _quizRepository.DeleteAsync(id);
         }
+        public async Task<Quiz> GetQuizByIdWithDetailsAsync(int id)
+        {
+            return await _quizRepository.GetQuizByIdWithDetailsAsync(id);
+        }
+
     }
 }

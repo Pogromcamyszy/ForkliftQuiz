@@ -47,5 +47,13 @@ namespace ForkliftQuiz.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<Quiz> GetQuizByIdWithDetailsAsync(int id)
+        {
+            return await _context.Quizzes
+                .Include(q => q.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(q => q.Id == id);
+        }
+
     }
 }

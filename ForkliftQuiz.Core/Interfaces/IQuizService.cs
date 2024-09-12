@@ -14,5 +14,7 @@ namespace ForkliftQuiz.Core.Interfaces
         Task CreateQuizAsync(Quiz quiz);
         Task UpdateQuizAsync(Quiz quiz);
         Task DeleteQuizAsync(int id);
+        Task<Quiz> GetQuizByIdWithDetailsAsync(int id);
+
     }
 }
