@@ -31,22 +31,25 @@ namespace ForkliftQuiz.Application.Services
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerUserDto.Password);
+
             var newUser = new User
             {
+                UserName = registerUserDto.Email,
                 Email = registerUserDto.Email,
-                PasswordHash = hashedPassword
+                PasswordHash = hashedPassword,
+                Role = registerUserDto.Role 
             };
 
             await _userRepository.AddAsync(newUser);
 
             var token = _jwtTokenGenerator.GenerateToken(newUser);
-
             return new AuthenticationResult
             {
                 Success = true,
                 Token = token
             };
         }
+
 
         public async Task<AuthenticationResult> LoginUserAsync(LoginUserDto loginUserDto)
         {

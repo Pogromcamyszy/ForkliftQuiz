@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ForkliftQuiz.Core.Entities
 {
-  
     public class User
     {
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public string Role { get; set; } 
-        public ICollection<Quiz> Quizzes { get; set; } 
+
+        // Default Role is set to 'User' if none is provided
+        private string _role;
+        public string Role
+        {
+            get => _role ?? "User";
+            set => _role = value;
+        }
+        public ICollection<Quiz> Quizzes { get; set; }
     }
 }
-

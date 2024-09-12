@@ -33,6 +33,10 @@ namespace ForkliftQuiz.Infrastructure.Repositories
 
         public async Task AddAsync(User user)
         {
+            if (string.IsNullOrEmpty(user.Role)) 
+            {
+                user.Role = "User"; 
+            }
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
