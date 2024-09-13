@@ -2,7 +2,6 @@
 {
     public class UpdateQuizDto
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<UpdateQuestionDto> Questions { get; set; }
@@ -10,7 +9,7 @@
 
     public class UpdateQuestionDto
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
         public string Text { get; set; }
         public List<UpdateAnswerDto> Answers { get; set; }
     }

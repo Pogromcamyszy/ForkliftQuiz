@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ForkliftQuiz.Core.Entities;
 using ForkliftQuiz.Core.Interfaces;
 using ForkliftQuiz.Core.DTOs;
+using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,7 +20,6 @@ public class QuizController : ControllerBase
         _quizService = quizService;
     }
 
-    // Get a quiz by its ID including questions and answers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetQuizById(int id)
     {
@@ -29,7 +29,6 @@ public class QuizController : ControllerBase
             return NotFound();
         }
 
-        // Map entity to DTO to control what is returned
         var quizDto = new QuizDto
         {
             Id = quiz.Id,
@@ -60,18 +59,19 @@ public class QuizController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var quizEntity = ConvertToQuizEntity(createQuizDto);
-        await _quizService.CreateQuizAsync(quizEntity);
+        var userIdClaim = User.FindFirst(ClaimTypes.Name);
+        if (userIdClaim == null)
+        {
+            return Unauthorized("Brak identyfikatora użytkownika.");
+        }
 
-        return Ok();
-    }
+        var userId = int.Parse(userIdClaim.Value);
 
-    private Quiz ConvertToQuizEntity(CreateQuizDto createQuizDto)
-    {
-        return new Quiz
+        var quiz = new Quiz
         {
             Title = createQuizDto.Title,
             Description = createQuizDto.Description,
+            UserId = userId, 
             Questions = createQuizDto.Questions.Select(q => new Question
             {
                 Text = q.Text,
@@ -82,6 +82,10 @@ public class QuizController : ControllerBase
                 }).ToList()
             }).ToList()
         };
+
+        await _quizService.CreateQuizAsync(quiz);
+
+        return Ok(quiz);
     }
 
     [Authorize(Roles = "Admin")]
@@ -93,11 +97,45 @@ public class QuizController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var quizEntity = ConvertToQuizEntity(updateQuizDto);
-        await _quizService.UpdateQuizAsync(quizEntity);
+        var existingQuiz = await _quizService.GetQuizByIdAsync(id);
+        if (existingQuiz == null)
+        {
+            return NotFound("Quiz not found.");
+        }
+
+        existingQuiz.Title = updateQuizDto.Title;
+        existingQuiz.Description = updateQuizDto.Description;
+
+        if (existingQuiz.Questions != null && updateQuizDto.Questions != null)
+        {
+            foreach (var updateQuestion in updateQuizDto.Questions)
+            {
+                var existingQuestion = existingQuiz.Questions.FirstOrDefault(q => q.Id == updateQuestion.Id);
+                if (existingQuestion != null)
+                {
+                    existingQuestion.Text = updateQuestion.Text;
+
+                     if (existingQuestion.Answers != null && updateQuestion.Answers != null)
+                    {
+                        foreach (var updateAnswer in updateQuestion.Answers)
+                        {
+                            var existingAnswer = existingQuestion.Answers.FirstOrDefault(a => a.Id == updateAnswer.Id);
+                            if (existingAnswer != null)
+                            {
+                                existingAnswer.Text = updateAnswer.Text;
+                                existingAnswer.IsCorrect = updateAnswer.IsCorrect;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        await _quizService.UpdateQuizAsync(existingQuiz);
 
         return Ok();
     }
+
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]

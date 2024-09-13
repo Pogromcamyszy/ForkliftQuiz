@@ -12,11 +12,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure the database context
 builder.Services.AddDbContext<ForkliftQuizDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add scoped services (repositories and services)
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -24,13 +22,12 @@ builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 
-// Configure JWT authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["Secret"];
-var issuer = jwtSettings["Issuer"];
-var audience = jwtSettings["Audience"];
+var issuer = jwtSettings["Issuer"] ?? "Forklift-Admin";
+var audience = jwtSettings["Audience"] ?? "Forklift-Learners";
 
-if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+if (string.IsNullOrEmpty(secretKey))
 {
     throw new ArgumentNullException("JWT settings (Secret, Issuer, Audience) must be provided in appsettings.json");
 }
@@ -48,41 +45,64 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
         };
-    });
+    });   
 
-// Add Authorization
 builder.Services.AddAuthorization();
 
-// Add controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.WriteIndented = true; 
+    });
 
-// Configure JWT Token Generator
+
 builder.Services.AddScoped<IJwtTokenGenerator>(provider =>
     new JwtTokenGenerator(secretKey));
 
-// Swagger configuration
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ForkliftQuiz API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Input your JWT token like this: Bearer {your token here}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline for development environment
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ForkliftQuiz API v1"));
 }
 
-// Enable HTTPS redirection
 app.UseHttpsRedirection();
 
-// Enable authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map controllers
 app.MapControllers();
 
 app.Run();

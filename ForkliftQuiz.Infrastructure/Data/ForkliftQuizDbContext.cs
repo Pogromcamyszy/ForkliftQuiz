@@ -17,13 +17,11 @@ namespace ForkliftQuiz.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Seeding Users
             modelBuilder.Entity<User>().HasData(
                 new User { Id = 1, UserName = "admin", Email = "admin@example.com", PasswordHash = "hashed_password", Role = "Admin" },
                 new User { Id = 2, UserName = "user1", Email = "user1@example.com", PasswordHash = "hashed_password1", Role = "User" }
             );
 
-            // Seeding Quizzes, Questions, and Answers
             modelBuilder.Entity<Quiz>().HasData(
                 new Quiz
                 {

@@ -10,7 +10,6 @@ namespace ForkliftQuiz.Core.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        // Default Role is set to 'User' if none is provided
         private string _role;
         public string Role
         {
