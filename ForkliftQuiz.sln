@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForkliftQuiz.Core", "ForkliftQuiz.Core\ForkliftQuiz.Core.csproj", "{26C1F849-0A4B-4579-8A76-663B2F4515A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForkliftQuiz.Core", "ForkliftQuiz.Core\ForkliftQuiz.Core.csproj", "{26C1F849-0A4B-4579-8A76-663B2F4515A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForkliftQuiz.Application", "ForkliftQuiz.Application\ForkliftQuiz.Application.csproj", "{F9AB3712-8900-4BA6-81B5-D505D93300A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForkliftQuiz.Application", "ForkliftQuiz.Application\ForkliftQuiz.Application.csproj", "{F9AB3712-8900-4BA6-81B5-D505D93300A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForkliftQuiz.Infrastructure", "ForkliftQuiz.Infrastructure\ForkliftQuiz.Infrastructure.csproj", "{5D2E06CF-16E0-4E32-8272-6904194C2D0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForkliftQuiz.Infrastructure", "ForkliftQuiz.Infrastructure\ForkliftQuiz.Infrastructure.csproj", "{5D2E06CF-16E0-4E32-8272-6904194C2D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForkliftQuiz.Presentation", "ForkliftQuiz.Presentation\ForkliftQuiz.Presentation.csproj", "{D27B7EA4-AFC8-4CF0-825E-412AD75D7388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForkliftQuiz.Presentation", "ForkliftQuiz.Presentation\ForkliftQuiz.Presentation.csproj", "{D27B7EA4-AFC8-4CF0-825E-412AD75D7388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4087EA83-1F1E-4087-BEAB-B4C67DEA87DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D27B7EA4-AFC8-4CF0-825E-412AD75D7388}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D27B7EA4-AFC8-4CF0-825E-412AD75D7388}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D27B7EA4-AFC8-4CF0-825E-412AD75D7388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4087EA83-1F1E-4087-BEAB-B4C67DEA87DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4087EA83-1F1E-4087-BEAB-B4C67DEA87DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4087EA83-1F1E-4087-BEAB-B4C67DEA87DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4087EA83-1F1E-4087-BEAB-B4C67DEA87DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

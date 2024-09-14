@@ -50,6 +50,14 @@ public class QuizController : ControllerBase
         return Ok(quizDto);
     }
 
+    [HttpGet("quizzes")]
+    public async Task<IActionResult> GetAllQuizzes()
+    {
+        var quizzes = await _quizService.GetAllQuizzesAsync();
+        return Ok(quizzes);
+    }
+
+
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateQuiz([FromBody] CreateQuizDto createQuizDto)
