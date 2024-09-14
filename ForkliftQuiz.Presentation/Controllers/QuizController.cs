@@ -19,7 +19,7 @@ public class QuizController : ControllerBase
     {
         _quizService = quizService;
     }
-
+    [Authorize(Roles = "User")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetQuizById(int id)
     {
@@ -49,7 +49,7 @@ public class QuizController : ControllerBase
 
         return Ok(quizDto);
     }
-
+    [Authorize(Roles = "User")]
     [HttpGet("quizzes")]
     public async Task<IActionResult> GetAllQuizzes()
     {
